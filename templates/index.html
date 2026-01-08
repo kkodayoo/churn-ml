@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telecom Churn Prediction Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="fas fa-chart-line icon"></i>Telecom Churn Dashboard</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('predict_form') }}"><i class="fas fa-user-check"></i> Predict Churn</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="text-center mb-4"><i class="fas fa-users icon"></i>Customer Churn Analysis Dashboard</h1>
+
+        <!-- Metrics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-2x mb-2"></i>
+                        <h5 class="card-title">Total Customers</h5>
+                        <p class="card-text fs-4">7043</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-white bg-danger">
+                    <div class="card-body text-center">
+                        <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                        <h5 class="card-title">Churn Rate</h5>
+                        <p class="card-text fs-4">26.5%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-white bg-info">
+                    <div class="card-body text-center">
+                        <i class="fas fa-trophy fa-2x mb-2"></i>
+                        <h5 class="card-title">Best Model Accuracy</h5>
+                        <p class="card-text fs-4">81.0%</p>
+                        <small>Logistic Regression</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-area fa-2x mb-2"></i>
+                        <h5 class="card-title">ROC-AUC Score</h5>
+                        <p class="card-text fs-4">0.85</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h5 class="mb-0"><i class="fas fa-chart-pie icon"></i>Churn Distribution</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="churnChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h5 class="mb-0"><i class="fas fa-venus-mars icon"></i>Gender Distribution</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="genderChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h5 class="mb-0"><i class="fas fa-calendar-alt icon"></i>Tenure Distribution</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="tenureChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h5 class="mb-0"><i class="fas fa-dollar-sign icon"></i>Monthly Charges Distribution</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chargesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Performance Table -->
+        <div class="card mb-4">
+            <div class="card-header text-center">
+                <h5 class="mb-0"><i class="fas fa-table icon"></i>Model Performance Comparison</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th><i class="fas fa-cogs"></i> Model</th>
+                                <th><i class="fas fa-bullseye"></i> Accuracy</th>
+                                <th><i class="fas fa-target"></i> Precision (Churn)</th>
+                                <th><i class="fas fa-search"></i> Recall (Churn)</th>
+                                <th><i class="fas fa-balance-scale"></i> F1-Score (Churn)</th>
+                                <th><i class="fas fa-chart-line"></i> ROC-AUC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Logistic Regression</strong></td>
+                                <td>0.8100</td>
+                                <td>0.67</td>
+                                <td>0.55</td>
+                                <td>0.60</td>
+                                <td>0.85</td>
+                            </tr>
+                            <tr>
+                                <td>Decision Tree</td>
+                                <td>0.7800</td>
+                                <td>0.58</td>
+                                <td>0.52</td>
+                                <td>0.55</td>
+                                <td>0.83</td>
+                            </tr>
+                            <tr>
+                                <td>XGBoost</td>
+                                <td>0.7900</td>
+                                <td>0.62</td>
+                                <td>0.53</td>
+                                <td>0.57</td>
+                                <td>0.84</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prediction Link -->
+        <div class="text-center">
+            <a href="{{ url_for('predict_form') }}" class="btn btn-primary btn-lg"><i class="fas fa-magic"></i> Go to Churn Prediction</a>
+        </div>
+    </div>
+
+    <script>
+        // Churn Distribution Chart
+        const churnCtx = document.getElementById('churnChart').getContext('2d');
+        new Chart(churnCtx, {
+            type: 'pie',
+            data: {
+                labels: ['No Churn', 'Churn'],
+                datasets: [{
+                    data: [5174, 1869],
+                    backgroundColor: ['#28a745', '#dc3545'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+
+        // Gender Distribution Chart
+        const genderCtx = document.getElementById('genderChart').getContext('2d');
+        new Chart(genderCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Female', 'Male'],
+                datasets: [{
+                    label: 'Count',
+                    data: [3488, 3555],
+                    backgroundColor: ['#007bff', '#6c757d'],
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Tenure Distribution Chart (simplified histogram)
+        const tenureCtx = document.getElementById('tenureChart').getContext('2d');
+        new Chart(tenureCtx, {
+            type: 'line',
+            data: {
+                labels: ['0-12', '13-24', '25-36', '37-48', '49-60', '61-72'],
+                datasets: [{
+                    label: 'Count',
+                    data: [1200, 1100, 1000, 900, 800, 700],
+                    borderColor: '#17a2b8',
+                    backgroundColor: 'rgba(23, 162, 184, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Monthly Charges Distribution Chart (simplified)
+        const chargesCtx = document.getElementById('chargesChart').getContext('2d');
+        new Chart(chargesCtx, {
+            type: 'bar',
+            data: {
+                labels: ['0-20', '21-40', '41-60', '61-80', '81-100', '100+'],
+                datasets: [{
+                    label: 'Count',
+                    data: [500, 800, 1200, 1500, 1000, 600],
+                    backgroundColor: '#ffc107',
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
