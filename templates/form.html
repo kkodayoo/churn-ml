@@ -1,193 +1,446 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Churn Prediction Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Churn Prediction Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#"><i class="fas fa-chart-line icon"></i>Telecom Churn Dashboard</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-header bg-primary text-white text-center">
-                        <h3 class="card-title mb-0"><i class="fas fa-user-check icon"></i>Customer Churn Prediction</h3>
-                    </div>
-                    <div class="card-body">
-                        <form action="/predict" method="POST">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="SeniorCitizen" class="form-label"><i class="fas fa-user icon"></i>Senior Citizen</label>
-                                    <select class="form-select" name="SeniorCitizen" required>
-                                        <option value="0">No</option>
-                                        <option value="1">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="tenure" class="form-label"><i class="fas fa-calendar icon"></i>Tenure (months)</label>
-                                    <input type="number" class="form-control" name="tenure" min="0" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="MonthlyCharges" class="form-label"><i class="fas fa-dollar-sign icon"></i>Monthly Charges</label>
-                                    <input type="number" class="form-control" name="MonthlyCharges" step="0.01" min="0" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="TotalCharges" class="form-label"><i class="fas fa-dollar-sign icon"></i>Total Charges</label>
-                                    <input type="number" class="form-control" name="TotalCharges" step="0.01" min="0" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="gender" class="form-label"><i class="fas fa-venus-mars icon"></i>Gender</label>
-                                    <select class="form-select" name="gender" required>
-                                        <option value="Female">Female</option>
-                                        <option value="Male">Male</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="Partner" class="form-label"><i class="fas fa-heart icon"></i>Partner</label>
-                                    <select class="form-select" name="Partner" required>
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="Dependents" class="form-label"><i class="fas fa-child icon"></i>Dependents</label>
-                                    <select class="form-select" name="Dependents" required>
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="PhoneService" class="form-label"><i class="fas fa-phone icon"></i>Phone Service</label>
-                                    <select class="form-select" name="PhoneService" required>
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="MultipleLines" class="form-label"><i class="fas fa-phone-volume icon"></i>Multiple Lines</label>
-                                    <select class="form-select" name="MultipleLines" required>
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="InternetService" class="form-label"><i class="fas fa-wifi icon"></i>Internet Service</label>
-                                    <select class="form-select" name="InternetService" required>
-                                        <option value="DSL">DSL</option>
-                                        <option value="Fiber optic">Fiber optic</option>
-                                        <option value="No">No</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="OnlineSecurity" class="form-label"><i class="fas fa-shield-alt icon"></i>Online Security</label>
-                                    <select class="form-select" name="OnlineSecurity" required>
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="OnlineBackup" class="form-label"><i class="fas fa-cloud icon"></i>Online Backup</label>
-                                    <select class="form-select" name="OnlineBackup" required>
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="DeviceProtection" class="form-label"><i class="fas fa-mobile-alt icon"></i>Device Protection</label>
-                                    <select class="form-select" name="DeviceProtection" required>
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="TechSupport" class="form-label"><i class="fas fa-headset icon"></i>Tech Support</label>
-                                    <select class="form-select" name="TechSupport" required>
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="StreamingTV" class="form-label"><i class="fas fa-tv icon"></i>Streaming TV</label>
-                                    <select class="form-select" name="StreamingTV" required>
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="StreamingMovies" class="form-label"><i class="fas fa-film icon"></i>Streaming Movies</label>
-                                    <select class="form-select" name="StreamingMovies" required>
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="Contract" class="form-label"><i class="fas fa-file-contract icon"></i>Contract</label>
-                                    <select class="form-select" name="Contract" required>
-                                        <option value="Month-to-month">Month-to-month</option>
-                                        <option value="One year">One year</option>
-                                        <option value="Two year">Two year</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="PaperlessBilling" class="form-label"><i class="fas fa-receipt icon"></i>Paperless Billing</label>
-                                    <select class="form-select" name="PaperlessBilling" required>
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="PaymentMethod" class="form-label"><i class="fas fa-credit-card icon"></i>Payment Method</label>
-                                <select class="form-select" name="PaymentMethod" required>
-                                    <option value="Bank transfer (automatic)">Bank transfer (automatic)</option>
-                                    <option value="Credit card (automatic)">Credit card (automatic)</option>
-                                    <option value="Electronic check">Electronic check</option>
-                                    <option value="Mailed check">Mailed check</option>
-                                </select>
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-magic"></i> Predict Churn</button>
-                            </div>
-                        </form>
-                        {% if prediction %}
-                        <div class="alert alert-info mt-4" role="alert">
-                            <i class="fas fa-info-circle"></i> {{ prediction|safe }}
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><i class="fas fa-chart-line icon"></i>Telecom Churn Dashboard</a>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+      </div>
     </div>
+  </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card model-selector mb-4">
+          <div class="card-body text-center">
+            <h5 class="mb-3">
+              <i class="fas fa-brain me-2"></i>Pilih Model Machine Learning
+            </h5>
+
+            <div class="d-flex justify-content-center gap-3">
+              <button class="btn model-card active" id="logistic-tab" data-bs-toggle="tab" data-bs-target="#logistic"
+                type="button">
+                <i class="fas fa-chart-line"></i>
+                <div class="fw-bold mt-2">Logistic Regression</div>
+                <div class="small text-muted">High Accuracy · Advanced</div>
+              </button>
+
+              <button class="btn model-card" id="xgboost-tab" data-bs-toggle="tab" data-bs-target="#xgboost"
+                type="button">
+                <i class="fas fa-bolt"></i>
+                <div class="fw-bold mt-2">XGBoost</div>
+                <div class="small text-muted">Interpretable · Baseline</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="tab-content" id="modelTabsContent">
+          <div class="tab-pane fade show active" id="logistic" role="tabpanel" aria-labelledby="logistic-tab">
+            <div class="card">
+              <div class="card-header bg-primary text-white text-center">
+                <h3 class="card-title mb-0"><i class="fas fa-user-check icon"></i>Customer Churn Prediction - Logistic
+                  Regression</h3>
+              </div>
+              <div class="card-body">
+                <form action="/predict" method="POST">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="SeniorCitizen" class="form-label"><i class="fas fa-user icon"></i>Senior
+                        Citizen</label>
+                      <select class="form-select" name="SeniorCitizen" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="tenure" class="form-label"><i class="fas fa-calendar icon"></i>Tenure (months)</label>
+                      <input type="number" class="form-control" name="tenure" min="0" required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="MonthlyCharges" class="form-label"><i class="fas fa-dollar-sign icon"></i>Monthly
+                        Charges</label>
+                      <input type="number" class="form-control" name="MonthlyCharges" step="0.01" min="0" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="TotalCharges" class="form-label"><i class="fas fa-dollar-sign icon"></i>Total
+                        Charges</label>
+                      <input type="number" class="form-control" name="TotalCharges" step="0.01" min="0" required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="gender" class="form-label"><i class="fas fa-venus-mars icon"></i>Gender</label>
+                      <select class="form-select" name="gender" required>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="Partner" class="form-label"><i class="fas fa-heart icon"></i>Partner</label>
+                      <select class="form-select" name="Partner" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="Dependents" class="form-label"><i class="fas fa-child icon"></i>Dependents</label>
+                      <select class="form-select" name="Dependents" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="PhoneService" class="form-label"><i class="fas fa-phone icon"></i>Phone
+                        Service</label>
+                      <select class="form-select" name="PhoneService" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="MultipleLines" class="form-label"><i class="fas fa-phone-volume icon"></i>Multiple
+                        Lines</label>
+                      <select class="form-select" name="MultipleLines" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="InternetService" class="form-label"><i class="fas fa-wifi icon"></i>Internet
+                        Service</label>
+                      <select class="form-select" name="InternetService" required>
+                        <option value="DSL">DSL</option>
+                        <option value="Fiber optic">Fiber optic</option>
+                        <option value="No">No</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="OnlineSecurity" class="form-label"><i class="fas fa-shield-alt icon"></i>Online
+                        Security</label>
+                      <select class="form-select" name="OnlineSecurity" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="OnlineBackup" class="form-label"><i class="fas fa-cloud icon"></i>Online
+                        Backup</label>
+                      <select class="form-select" name="OnlineBackup" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="DeviceProtection" class="form-label"><i class="fas fa-mobile-alt icon"></i>Device
+                        Protection</label>
+                      <select class="form-select" name="DeviceProtection" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="TechSupport" class="form-label"><i class="fas fa-headset icon"></i>Tech
+                        Support</label>
+                      <select class="form-select" name="TechSupport" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="StreamingTV" class="form-label"><i class="fas fa-tv icon"></i>Streaming TV</label>
+                      <select class="form-select" name="StreamingTV" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="StreamingMovies" class="form-label"><i class="fas fa-film icon"></i>Streaming
+                        Movies</label>
+                      <select class="form-select" name="StreamingMovies" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="Contract" class="form-label"><i class="fas fa-file-contract icon"></i>Contract</label>
+                      <select class="form-select" name="Contract" required>
+                        <option value="Month-to-month">Month-to-month</option>
+                        <option value="One year">One year</option>
+                        <option value="Two year">Two year</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="PaperlessBilling" class="form-label"><i class="fas fa-receipt icon"></i>Paperless
+                        Billing</label>
+                      <select class="form-select" name="PaperlessBilling" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="PaymentMethod" class="form-label"><i class="fas fa-credit-card icon"></i>Payment
+                      Method</label>
+                    <select class="form-select" name="PaymentMethod" required>
+                      <option value="Bank transfer (automatic)">Bank transfer (automatic)</option>
+                      <option value="Credit card (automatic)">Credit card (automatic)</option>
+                      <option value="Electronic check">Electronic check</option>
+                      <option value="Mailed check">Mailed check</option>
+                    </select>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-magic"></i> Predict Churn</button>
+                  </div>
+                </form>
+                {% if prediction %}
+                <div class="alert alert-info mt-4" role="alert">
+                  <i class="fas fa-info-circle"></i> {{ prediction|safe }}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="xgboost" role="tabpanel" aria-labelledby="xgboost-tab">
+            <div class="card">
+              <div class="card-header bg-primary text-white text-center">
+                <h3 class="card-title mb-0"><i class="fas fa-user-check icon"></i>Customer Churn Prediction - XGBoost
+                </h3>
+              </div>
+              <div class="card-body">
+                <form action="/predict_xgb" method="POST">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="SeniorCitizen" class="form-label"><i class="fas fa-user icon"></i>Senior
+                        Citizen</label>
+                      <select class="form-select" name="SeniorCitizen" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="tenure" class="form-label"><i class="fas fa-calendar icon"></i>Tenure (months)</label>
+                      <input type="number" class="form-control" name="tenure" min="0" required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="MonthlyCharges" class="form-label"><i class="fas fa-dollar-sign icon"></i>Monthly
+                        Charges</label>
+                      <input type="number" class="form-control" name="MonthlyCharges" step="0.01" min="0" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="TotalCharges" class="form-label"><i class="fas fa-dollar-sign icon"></i>Total
+                        Charges</label>
+                      <input type="number" class="form-control" name="TotalCharges" step="0.01" min="0" required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="gender" class="form-label"><i class="fas fa-venus-mars icon"></i>Gender</label>
+                      <select class="form-select" name="gender" required>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="Partner" class="form-label"><i class="fas fa-heart icon"></i>Partner</label>
+                      <select class="form-select" name="Partner" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="Dependents" class="form-label"><i class="fas fa-child icon"></i>Dependents</label>
+                      <select class="form-select" name="Dependents" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="PhoneService" class="form-label"><i class="fas fa-phone icon"></i>Phone
+                        Service</label>
+                      <select class="form-select" name="PhoneService" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="MultipleLines" class="form-label"><i class="fas fa-phone-volume icon"></i>Multiple
+                        Lines</label>
+                      <select class="form-select" name="MultipleLines" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="InternetService" class="form-label"><i class="fas fa-wifi icon"></i>Internet
+                        Service</label>
+                      <select class="form-select" name="InternetService" required>
+                        <option value="DSL">DSL</option>
+                        <option value="Fiber optic">Fiber optic</option>
+                        <option value="No">No</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="OnlineSecurity" class="form-label"><i class="fas fa-shield-alt icon"></i>Online
+                        Security</label>
+                      <select class="form-select" name="OnlineSecurity" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="OnlineBackup" class="form-label"><i class="fas fa-cloud icon"></i>Online
+                        Backup</label>
+                      <select class="form-select" name="OnlineBackup" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="DeviceProtection" class="form-label"><i class="fas fa-mobile-alt icon"></i>Device
+                        Protection</label>
+                      <select class="form-select" name="DeviceProtection" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="TechSupport" class="form-label"><i class="fas fa-headset icon"></i>Tech
+                        Support</label>
+                      <select class="form-select" name="TechSupport" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="StreamingTV" class="form-label"><i class="fas fa-tv icon"></i>Streaming TV</label>
+                      <select class="form-select" name="StreamingTV" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="StreamingMovies" class="form-label"><i class="fas fa-film icon"></i>Streaming
+                        Movies</label>
+                      <select class="form-select" name="StreamingMovies" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="Contract" class="form-label"><i class="fas fa-file-contract icon"></i>Contract</label>
+                      <select class="form-select" name="Contract" required>
+                        <option value="Month-to-month">Month-to-month</option>
+                        <option value="One year">One year</option>
+                        <option value="Two year">Two year</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="PaperlessBilling" class="form-label"><i class="fas fa-receipt icon"></i>Paperless
+                        Billing</label>
+                      <select class="form-select" name="PaperlessBilling" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="PaymentMethod" class="form-label"><i class="fas fa-credit-card icon"></i>Payment
+                      Method</label>
+                    <select class="form-select" name="PaymentMethod" required>
+                      <option value="Bank transfer (automatic)">Bank transfer (automatic)</option>
+                      <option value="Credit card (automatic)">Credit card (automatic)</option>
+                      <option value="Electronic check">Electronic check</option>
+                      <option value="Mailed check">Mailed check</option>
+                    </select>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-magic"></i> Predict Churn</button>
+                  </div>
+                </form>
+                {% if prediction_xgb %}
+                <div class="alert alert-info mt-4" role="alert">
+                  <i class="fas fa-info-circle"></i> {{ prediction_xgb|safe }}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Set active tab based on prediction result
+    {% if prediction %}
+    document.getElementById('logistic-tab').classList.add('active');
+    {% elif prediction_xgb %}
+    document.getElementById('xgboost-tab').classList.add('active');
+    {% endif %}
+
+    // Ensure tabs work on click
+    document.querySelectorAll('.model-card').forEach(function(tabEl) {
+        tabEl.addEventListener('click', function(event) {
+            // Remove active from all
+            document.querySelectorAll('.model-card').forEach(b => b.classList.remove('active'));
+            // Add active to clicked
+            tabEl.classList.add('active');
+            // Show corresponding tab-pane
+            var target = tabEl.getAttribute('data-bs-target');
+            var tabPane = document.querySelector(target);
+            if (tabPane) {
+                // Hide all tab-panes
+                document.querySelectorAll('.tab-pane').forEach(pane => {
+                    pane.classList.remove('show', 'active');
+                });
+                // Show target tab-pane
+                tabPane.classList.add('show', 'active');
+            }
+        });
+    });
+  </script>
+
 </body>
+
 </html>
