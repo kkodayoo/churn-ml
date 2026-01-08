@@ -86,9 +86,10 @@ def predict():
     probability = logreg.predict_proba(input_data)[0][1]
 
     result = "Churn" if prediction == 1 else "No Churn"
-    prob_text = f"Probability of Churn: {probability:.2f}"
 
-    return render_template('form.html', prediction=f"{result} - {prob_text}")
+    prediction_text = f"<strong>Prediction:</strong> {result}<br><strong>Probability of Churn:</strong> {probability:.2f}"
+
+    return render_template('form.html', prediction=prediction_text)
 
 if __name__ == '__main__':
     app.run(debug=True)
